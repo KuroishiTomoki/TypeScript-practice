@@ -109,3 +109,34 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* 全体: flex の子要素が潰れないようにする */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+#root > * {
+  flex-shrink: 0;
+}
+
+/* ボタン共通 */
+button {
+  align-self: center;
+  min-width: 80px;
+  min-height: 36px;
+  padding: 8px 16px;
+  margin: 8px;
+  font: inherit;
+  color: var(--text-h);
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
