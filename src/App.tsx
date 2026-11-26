@@ -7,7 +7,16 @@ import { Practice4 } from './practoces/Practice4'
 import { useState } from 'react'
 import { Todo } from './Todo'
 import type { TodoType } from './types/todo'
+import { Text } from './Text'
+import { UserProfile } from './UserProfile'
+import type { User } from './types/user'
 
+
+const user:User = {
+  name:"ジャケ",
+  hobbies:["映画", "筋トレ"]
+
+}
 
 
 function App() {
@@ -20,10 +29,15 @@ function App() {
       res.data.map((log) => console.log(log.id));
       setTodos(res.data);
     });
-  };
+  };  
 
   return (
     <>
+      <Text color="red" fontSize="32px"/>
+
+      <UserProfile user={user}/>
+
+
       <button onClick={() => onClickFetchData()}></button>
       {todos.map((todo) => {
         return(
