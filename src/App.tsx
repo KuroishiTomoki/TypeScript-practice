@@ -10,18 +10,29 @@ import type { TodoType } from './types/todo'
 import { Text } from './Text'
 import { UserProfile } from './UserProfile'
 import type { User } from './types/user'
+import { UserCard } from './components/UserCard'
+import type { UserProfileType } from './types/userProfile'
+import type { UserApi } from './types/userApi'
 
 
 const user:User = {
   name:"ジャケ",
   hobbies:["映画", "筋トレ"]
-
 }
 
+
+const userProfile:UserProfileType = {
+    userId: 1,
+    name: "シャケ",
+    email: "mausuraion100@gmail.com",
+    address: "東京都渋谷区東4-7-13 プリモ広尾103号室"
+}
 
 function App() {
 
   const [todos, setTodos] = useState<Array<TodoType>>([]);
+  const [users, setUsers] = useState<Array<UserApi>>([]);
+
 
   const onClickFetchData = () => {        
     axios.get<Array<TodoType>>("https://jsonplaceholder.typicode.com/todos").then((res) => {
@@ -31,8 +42,19 @@ function App() {
     });
   };  
 
+  const onClickFetchUserData = () => {
+    axios.get<Array<UserApi>>("https://jsonplaceholder.typicode.com/users").then((res) => {
+
+    })
+  }
+
   return (
     <>
+      <UserCard user={userProfile}/>
+      <button onClick={() => onClickFetchUserData()}>ユーザーデータ取得</button>
+
+
+
       <Text color="red" fontSize="32px"/>
 
       <UserProfile user={user}/>
