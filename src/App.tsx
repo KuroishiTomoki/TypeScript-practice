@@ -6,14 +6,9 @@ import { Practice3 } from './practoces/Practice3'
 import { Practice4 } from './practoces/Practice4'
 import { useState } from 'react'
 import { Todo } from './Todo'
+import type { TodoType } from './types/todo'
 
-type TodoType = {
- 
-    userId: number;
-    id: number;
-    title: string;
-    completed: boolean;
-}
+
 
 function App() {
 
