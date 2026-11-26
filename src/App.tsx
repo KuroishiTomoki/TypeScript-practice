@@ -31,7 +31,7 @@ const userProfile:UserProfileType = {
 function App() {
 
   const [todos, setTodos] = useState<Array<TodoType>>([]);
-  const [users, setUsers] = useState<Array<UserApi>>([]);
+  const [users, setUsers] = useState<Array<UserProfileType>>([]);
 
 
   const onClickFetchData = () => {        
@@ -44,7 +44,14 @@ function App() {
 
   const onClickFetchUserData = () => {
     axios.get<Array<UserApi>>("https://jsonplaceholder.typicode.com/users").then((res) => {
+      const data = res.data.map((user) => ({
+        userId: user.id,
+        name: `${user.name} ${user.username}`,
+        email: user.email,
+        address: `${user.address.city} ${user.address.suite} ${user.address.city}`
+      }));
 
+      setUsers(data);
     })
   }
 
@@ -52,7 +59,13 @@ function App() {
     <>
       <UserCard user={userProfile}/>
       <button onClick={() => onClickFetchUserData()}>ユーザーデータ取得</button>
-
+      {users.map((user) => {
+        return(
+          <>
+            <UserCard key={user.userId} user={user} />
+          </>
+        )
+      })}
 
 
       <Text color="red" fontSize="32px"/>
