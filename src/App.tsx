@@ -32,7 +32,8 @@ function App() {
 
   const [todos, setTodos] = useState<Array<TodoType>>([]);
   const [users, setUsers] = useState<Array<UserProfileType>>([]);
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const onClickFetchData = () => {        
     axios.get<Array<TodoType>>("https://jsonplaceholder.typicode.com/todos").then((res) => {
@@ -43,15 +44,24 @@ function App() {
   };  
 
   const onClickFetchUserData = () => {
+    setLoading(true);
+    setError(false);
+
     axios.get<Array<UserApi>>("https://jsonplaceholder.typicode.com/users").then((res) => {
       const data = res.data.map((user) => ({
         userId: user.id,
         name: `${user.name} ${user.username}`,
         email: user.email,
         address: `${user.address.city} ${user.address.suite} ${user.address.city}`
-      }));
+      })
+    );
 
       setUsers(data);
+    }).catch(() => {
+      setError(true);
+
+    }).finally(() => {
+      setLoading(false);
     })
   }
 
@@ -59,14 +69,20 @@ function App() {
     <>
       <UserCard user={userProfile}/>
       <button onClick={() => onClickFetchUserData()}>ユーザーデータ取得</button>
-      {users.map((user) => {
-        return(
-          <>
-            <UserCard key={user.userId} user={user} />
-          </>
-        )
-      })}
-
+      <br/>
+      {error ? (<p>エラーが発生しました</p>) : loading ? (
+        <p>ローディング</p>
+      ) : (
+        <>
+          {users.map((user) => {
+            return(
+              <>
+                <UserCard key={user.userId} user={user} />
+              </>
+            )
+          })}
+        </>
+      ) }
 
       <Text color="red" fontSize="32px"/>
 
