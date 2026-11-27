@@ -12,7 +12,7 @@ import { UserProfile } from './UserProfile'
 import type { User } from './types/user'
 import { UserCard } from './components/UserCard'
 import type { UserProfileType } from './types/userProfile'
-import type { UserApi } from './types/userApi'
+import { useAllUsers } from './hooks/useAllUsers'
 
 
 const user:User = {
@@ -29,12 +29,10 @@ const userProfile:UserProfileType = {
 }
 
 function App() {
+  const {getUsers, users, loading, error} = useAllUsers();
 
   const [todos, setTodos] = useState<Array<TodoType>>([]);
-  const [users, setUsers] = useState<Array<UserProfileType>>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-
+ 
   const onClickFetchData = () => {        
     axios.get<Array<TodoType>>("https://jsonplaceholder.typicode.com/todos").then((res) => {
       console.log(res);
@@ -44,25 +42,7 @@ function App() {
   };  
 
   const onClickFetchUserData = () => {
-    setLoading(true);
-    setError(false);
-
-    axios.get<Array<UserApi>>("https://jsonplaceholder.typicode.com/users").then((res) => {
-      const data = res.data.map((user) => ({
-        userId: user.id,
-        name: `${user.name} ${user.username}`,
-        email: user.email,
-        address: `${user.address.city} ${user.address.suite} ${user.address.city}`
-      })
-    );
-
-      setUsers(data);
-    }).catch(() => {
-      setError(true);
-
-    }).finally(() => {
-      setLoading(false);
-    })
+    getUsers();
   }
 
   return (
